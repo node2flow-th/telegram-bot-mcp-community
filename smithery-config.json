@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "TELEGRAM_BOT_TOKEN": {
+      "type": "string",
+      "description": "Your Telegram Bot token from @BotFather"
+    }
+  },
+  "required": ["TELEGRAM_BOT_TOKEN"]
+}
