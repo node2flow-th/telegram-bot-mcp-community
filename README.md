@@ -1,5 +1,6 @@
 # Telegram Bot MCP Server
 
+[![smithery badge](https://smithery.ai/badge/node2flow/telegram-bot)](https://smithery.ai/server/node2flow/telegram-bot)
 [![npm version](https://img.shields.io/npm/v/@node2flow/telegram-bot-mcp.svg)](https://www.npmjs.com/package/@node2flow/telegram-bot-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
