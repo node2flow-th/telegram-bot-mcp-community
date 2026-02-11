@@ -5,6 +5,13 @@
 export interface MCPToolDefinition {
   name: string;
   description: string;
+  annotations?: {
+    title?: string;
+    readOnlyHint?: boolean;
+    destructiveHint?: boolean;
+    idempotentHint?: boolean;
+    openWorldHint?: boolean;
+  };
   inputSchema: Record<string, unknown>;
 }
 
@@ -14,6 +21,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_get_me',
     description:
       'Get basic information about the bot: id, username, first_name, can_join_groups, can_read_all_group_messages, supports_inline_queries.',
+    annotations: {
+      title: 'Get Bot Info',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {},
@@ -23,6 +36,13 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_set_my_commands',
     description:
       'Set the list of bot commands shown in the Telegram chat menu. Each command has a "command" (1-32 chars, lowercase a-z, 0-9, _) and a "description" (1-256 chars). Max 100 commands.',
+    annotations: {
+      title: 'Set Bot Commands',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -56,6 +76,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_send_message',
     description:
       'Send a text message to a chat. Supports Markdown, MarkdownV2, and HTML formatting. Can include inline keyboards via reply_markup.',
+    annotations: {
+      title: 'Send Message',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -95,6 +121,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_send_photo',
     description:
       'Send a photo to a chat. Provide a URL or file_id from a previously uploaded photo.',
+    annotations: {
+      title: 'Send Photo',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -130,6 +162,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_send_document',
     description:
       'Send a document/file to a chat. Provide a URL or file_id. Max 50MB for bots.',
+    annotations: {
+      title: 'Send Document',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -161,6 +199,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_send_video',
     description:
       'Send a video to a chat. Provide a URL or file_id. Supports MPEG4 format, max 50MB.',
+    annotations: {
+      title: 'Send Video',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -200,6 +244,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_send_audio',
     description:
       'Send an audio file to a chat. Displayed as a music player. Provide a URL or file_id. Max 50MB, MP3/M4A format.',
+    annotations: {
+      title: 'Send Audio',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -238,6 +288,12 @@ export const TOOLS: MCPToolDefinition[] = [
   {
     name: 'tg_send_location',
     description: 'Send a geographic location point to a chat.',
+    annotations: {
+      title: 'Send Location',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -265,6 +321,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_send_poll',
     description:
       'Send a poll to a chat. Supports regular polls and quiz mode. For quiz mode, set type to "quiz" and provide correct_option_id.',
+    annotations: {
+      title: 'Send Poll',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -304,6 +366,12 @@ export const TOOLS: MCPToolDefinition[] = [
   {
     name: 'tg_send_contact',
     description: 'Send a phone contact card to a chat.',
+    annotations: {
+      title: 'Send Contact',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -333,6 +401,13 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_edit_message_text',
     description:
       'Edit the text of a previously sent message. The bot must be the author of the message.',
+    annotations: {
+      title: 'Edit Message Text',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -349,6 +424,13 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_edit_message_caption',
     description:
       'Edit the caption of a previously sent media message (photo, video, document, audio).',
+    annotations: {
+      title: 'Edit Message Caption',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -365,6 +447,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_delete_message',
     description:
       'Delete a message. Bot must have delete permission in group chats. Messages older than 48 hours cannot be deleted.',
+    annotations: {
+      title: 'Delete Message',
+      readOnlyHint: false,
+      destructiveHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -380,6 +468,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_get_chat',
     description:
       'Get detailed information about a chat: title, description, type, member count, permissions, pinned message, etc.',
+    annotations: {
+      title: 'Get Chat Info',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -391,6 +485,12 @@ export const TOOLS: MCPToolDefinition[] = [
   {
     name: 'tg_get_chat_member_count',
     description: 'Get the number of members in a chat.',
+    annotations: {
+      title: 'Get Chat Member Count',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -403,6 +503,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_get_chat_member',
     description:
       'Get information about a specific member: status (creator, administrator, member, restricted, left, kicked), permissions, and custom title.',
+    annotations: {
+      title: 'Get Chat Member',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -416,6 +522,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_ban_chat_member',
     description:
       'Ban a user from a group, supergroup, or channel. The user will be unable to return unless unbanned. Bot must be admin with ban permission.',
+    annotations: {
+      title: 'Ban Chat Member',
+      readOnlyHint: false,
+      destructiveHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -431,6 +543,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_unban_chat_member',
     description:
       'Unban a previously banned user. The user is NOT added back automatically and must rejoin via invite link.',
+    annotations: {
+      title: 'Unban Chat Member',
+      readOnlyHint: false,
+      destructiveHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -447,6 +565,13 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_set_webhook',
     description:
       'Set a webhook URL for receiving Telegram updates. Telegram sends POST requests with JSON Update objects to this URL. Supported ports: 443, 80, 88, 8443.',
+    annotations: {
+      title: 'Set Webhook',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -462,6 +587,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_delete_webhook',
     description:
       'Remove the webhook integration. After this, you can use getUpdates for polling.',
+    annotations: {
+      title: 'Delete Webhook',
+      readOnlyHint: false,
+      destructiveHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -473,6 +604,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_get_webhook_info',
     description:
       'Get current webhook status: URL, pending update count, last error date/message, max connections, and allowed update types.',
+    annotations: {
+      title: 'Get Webhook Info',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {},
@@ -484,6 +621,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_answer_callback_query',
     description:
       'Answer a callback query from an inline keyboard button press. Must be called to stop the loading indicator on the button.',
+    annotations: {
+      title: 'Answer Callback Query',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -498,6 +641,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_get_file',
     description:
       'Get file info and download URL. Returns file_id, file_size, file_path, and a ready-to-use download_url. Files up to 20MB.',
+    annotations: {
+      title: 'Get File',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -509,6 +658,12 @@ export const TOOLS: MCPToolDefinition[] = [
   {
     name: 'tg_get_user_profile_photos',
     description: 'Get a list of profile photos for a user.',
+    annotations: {
+      title: 'Get User Profile Photos',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -525,6 +680,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_pin_chat_message',
     description:
       'Pin a message in a chat. Bot must have pin_messages admin permission in groups/supergroups.',
+    annotations: {
+      title: 'Pin Chat Message',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -539,6 +700,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_unpin_chat_message',
     description:
       'Unpin a message in a chat. If message_id is not provided, unpins the most recent pinned message.',
+    annotations: {
+      title: 'Unpin Chat Message',
+      readOnlyHint: false,
+      destructiveHint: true,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -552,6 +719,12 @@ export const TOOLS: MCPToolDefinition[] = [
     name: 'tg_create_chat_invite_link',
     description:
       'Create an additional invite link for a chat. Bot must be admin with invite_users permission.',
+    annotations: {
+      title: 'Create Chat Invite Link',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {

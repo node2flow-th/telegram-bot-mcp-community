@@ -134,7 +134,7 @@ async function startHttp() {
   app.get('/', (_req: any, res: any) => {
     res.json({
       name: 'telegram-bot-mcp',
-      version: '1.0.0',
+      version: '1.0.2',
       status: 'ok',
       tools: TOOLS.length,
       transport: 'streamable-http',

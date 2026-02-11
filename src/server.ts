@@ -134,16 +134,20 @@ export function handleToolCall(
 export function createServer(config?: TelegramMcpConfig) {
   const server = new McpServer({
     name: 'telegram-bot-mcp',
-    version: '1.0.0',
+    version: '1.0.2',
   });
 
   let client: TelegramClient | null = null;
 
+  // Register all 27 tools with annotations
   for (const tool of TOOLS) {
-    server.tool(
+    server.registerTool(
       tool.name,
-      tool.description,
-      tool.inputSchema as Record<string, unknown>,
+      {
+        description: tool.description,
+        inputSchema: tool.inputSchema as any,
+        annotations: tool.annotations,
+      },
       async (args: Record<string, unknown>) => {
         const botToken =
           config?.botToken ||
@@ -175,6 +179,99 @@ export function createServer(config?: TelegramMcpConfig) {
       }
     );
   }
+
+  // Register prompts
+  server.prompt(
+    'send-messages',
+    'Guide for sending different types of messages via Telegram bot',
+    async () => {
+      return {
+        messages: [{
+          role: 'user' as const,
+          content: {
+            type: 'text' as const,
+            text: [
+              'You are a Telegram bot assistant. Help me send messages through my bot.',
+              '',
+              'Available message types:',
+              '1. **Text** — Use tg_send_message with chat_id and text (supports MarkdownV2/HTML)',
+              '2. **Photo** — Use tg_send_photo with chat_id and photo URL',
+              '3. **Document** — Use tg_send_document with chat_id and document URL',
+              '4. **Video** — Use tg_send_video with chat_id and video URL',
+              '5. **Audio** — Use tg_send_audio with chat_id and audio URL',
+              '6. **Location** — Use tg_send_location with chat_id, latitude, longitude',
+              '7. **Poll** — Use tg_send_poll with chat_id, question, options',
+              '8. **Contact** — Use tg_send_contact with chat_id, phone_number, first_name',
+              '',
+              'Start by getting my bot info with tg_get_me.',
+            ].join('\n'),
+          },
+        }],
+      };
+    },
+  );
+
+  server.prompt(
+    'manage-chat',
+    'Guide for managing Telegram chats, members, and webhooks',
+    async () => {
+      return {
+        messages: [{
+          role: 'user' as const,
+          content: {
+            type: 'text' as const,
+            text: [
+              'You are a Telegram chat management assistant.',
+              '',
+              'Available actions:',
+              '1. **Get chat info** — Use tg_get_chat for chat details',
+              '2. **Member count** — Use tg_get_chat_member_count',
+              '3. **Check member** — Use tg_get_chat_member for member status',
+              '4. **Ban/Unban** — Use tg_ban_chat_member, tg_unban_chat_member',
+              '5. **Webhooks** — Use tg_set_webhook, tg_delete_webhook, tg_get_webhook_info',
+              '6. **Pin messages** — Use tg_pin_chat_message, tg_unpin_chat_message',
+              '7. **Invite links** — Use tg_create_chat_invite_link',
+              '',
+              'What would you like to manage?',
+            ].join('\n'),
+          },
+        }],
+      };
+    },
+  );
+
+  // Register resources
+  server.resource(
+    'server-info',
+    'telegram://server-info',
+    {
+      description: 'Connection status and available tools for this Telegram MCP server',
+      mimeType: 'application/json',
+    },
+    async () => {
+      return {
+        contents: [{
+          uri: 'telegram://server-info',
+          mimeType: 'application/json',
+          text: JSON.stringify({
+            name: 'telegram-bot-mcp',
+            version: '1.0.2',
+            connected: !!config,
+            tools_available: TOOLS.length,
+            tool_categories: {
+              bot_info: 2,
+              send_messages: 8,
+              edit_messages: 3,
+              chat_management: 5,
+              webhooks: 3,
+              callbacks_and_files: 3,
+              pins_and_invites: 3,
+            },
+          }, null, 2),
+        }],
+      };
+    },
+  );
 
   return server;
 }
