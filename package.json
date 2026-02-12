@@ -1,6 +1,6 @@
 {
   "name": "@node2flow/telegram-bot-mcp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "MCP server for Telegram Bot API — send messages, manage chats, webhooks, files, and more through 27 tools",
   "keywords": [
     "telegram",

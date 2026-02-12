@@ -29,7 +29,9 @@ export const TOOLS: MCPToolDefinition[] = [
     },
     inputSchema: {
       type: 'object',
-      properties: {},
+      properties: {
+        _fields: { type: 'string', description: 'Comma-separated list of fields to include in the response (e.g. "id,username,first_name")' },
+      },
     },
   },
   {
@@ -612,7 +614,9 @@ export const TOOLS: MCPToolDefinition[] = [
     },
     inputSchema: {
       type: 'object',
-      properties: {},
+      properties: {
+        _fields: { type: 'string', description: 'Comma-separated list of fields to include in the response (e.g. "url,pending_update_count")' },
+      },
     },
   },
 

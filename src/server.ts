@@ -135,7 +135,7 @@ export function handleToolCall(
 export function createServer(config?: TelegramMcpConfig) {
   const server = new McpServer({
     name: 'telegram-bot-mcp',
-    version: '1.0.3',
+    version: '1.0.4',
   });
 
   let client: TelegramClient | null = null;
@@ -256,7 +256,7 @@ export function createServer(config?: TelegramMcpConfig) {
           mimeType: 'application/json',
           text: JSON.stringify({
             name: 'telegram-bot-mcp',
-            version: '1.0.3',
+            version: '1.0.4',
             connected: !!config,
             tools_available: TOOLS.length,
             tool_categories: {
