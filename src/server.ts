@@ -3,6 +3,7 @@
  */
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { TelegramClient } from './client.js';
 import { TOOLS } from './tools.js';
 
@@ -134,7 +135,7 @@ export function handleToolCall(
 export function createServer(config?: TelegramMcpConfig) {
   const server = new McpServer({
     name: 'telegram-bot-mcp',
-    version: '1.0.2',
+    version: '1.0.3',
   });
 
   let client: TelegramClient | null = null;
@@ -255,7 +256,7 @@ export function createServer(config?: TelegramMcpConfig) {
           mimeType: 'application/json',
           text: JSON.stringify({
             name: 'telegram-bot-mcp',
-            version: '1.0.2',
+            version: '1.0.3',
             connected: !!config,
             tools_available: TOOLS.length,
             tool_categories: {
@@ -272,6 +273,17 @@ export function createServer(config?: TelegramMcpConfig) {
       };
     },
   );
+
+  // Override tools/list handler to return raw JSON Schema with property descriptions.
+  // McpServer's Zod processing strips raw JSON Schema properties, returning empty schemas.
+  (server as any).server.setRequestHandler(ListToolsRequestSchema, () => ({
+    tools: TOOLS.map(tool => ({
+      name: tool.name,
+      description: tool.description,
+      inputSchema: tool.inputSchema,
+      annotations: tool.annotations,
+    })),
+  }));
 
   return server;
 }
